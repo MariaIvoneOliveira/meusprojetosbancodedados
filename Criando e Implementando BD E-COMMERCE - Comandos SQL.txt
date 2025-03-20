@@ -1,0 +1,181 @@
+|DIO| DESAFIO -------------------------------------------------------------|
+|Autor| Maria Ivone de Oliveira                                            |
+|--------------------------------------------------------------------------|
+
+1-Crie queries SQL com as cláusulas abaixo: 
+ 
+a) Recuperação simples com um SELECT statement
+
+b) Filtros com o WHERE
+
+c) Crie expressões para gerar atributos derivados
+
+d) Defina ordenações dos dados ORDER BY
+
+e) Condições de filtros aos grupos - HAVING statement
+
+f) Crie junções entre tabelas para fornecer uma perspectiva mais complexa
+   dos dados
+|----------------------------------------------------------------------|INICIO|
+|DIO |                    Desafio - Comandos                                  | 
+|-----------------------------------------------------------------------------| 
+2 - Comandos referentes às Clausulas do ( item 1 )
+
+2.1) Comando SQL com (SELECT, WHERE, ORDER BY,JOIN) referente às clausulas (a, b, d,f): 
+ 
+select   idClient , clients.tpessoa as 'Pessoa Fisica', Cnpjcpf as CPF ,  
+          concat(fName , ' ',mInit , ' ',lName ) as 'Nome do Cliente', 
+          idOrder 'No.do Pedido'     
+ from clients join Orders  
+ on idClient = idOrderClient 
+ where tpessoa = 1  
+ order by idClient;
+ 
+2.1.1) Resultado do comando SQL:
+# idClient	Pessoa Fisica	CPF	    Nome do Cliente       No.do Pedido
+    1	          1	       123456789    Maria M Silva	        1
+    1	          1	       123456789    Maria M Silva	        5
+    2	          1	       987654321    Matheus O Pimentel	        2
+    3	          1	        45678913    Ricardo F Silva  	        3
+    3	          1	        45678913    Ricardo F Silva  	        6
+    4	          1	       789123456    Julia S Franca	        4
+|
+2.2) Comando SQL com  expressões para gerar atributos derivados, referente a letra (c).
+
+2.2.1) Comando SQL:
+  select    idProduct ,  Pname ,  classification_kids ,  category ,  avaliacao  
+  from product  
+  where classification_kids >= 0 and avaliacao in (3,5); 
+
+2.2.2) Resultado do comando SQL:
+
+# idProduct	Pname	         classification_kids	category	avaliacao
+   2	        Barbie Elsa	        1	        Brinquedos	    3
+   3	        Body Carters	        1	        Vestimenta	    5
+   5	        Sofa retratil	        0	        Moveis	            3
+   7	        Fire Stick Amazon	0	        Eletronicos	    3
+   
+|----------------------------------------------------------------------|FIM SQL
+2.3) - Comando SQL com (HAVING/GROUP BY) referente à clausula (e): 
+
+Objetivo: Este comando SQL trás para cada fornecedor a  quantidade dos tipos de produtos(Qtd.Tipos de Produtos) e maior que 2. 
+
+2.3.1) Comando SQL:
+select idPsSupplier as 'Fornecedor' , count(*) as 'Qtd.Tipos de Produtos'  ,
+         supplier.CNPJ , supplier.SocialName as 'Razao Social'    
+  from  productsupplier , supplier
+  where idPsSupplier = idSupplier
+  group by  idPsSupplier 
+  having COUNT(*) = 2
+  order by idPsSupplier  ;
+
+2.3.2) Resultado do comando SQL:
+# Fornecedor Qtd.Tipos de Produtos	CNPJ	        Razao Social
+   1	       2	               123456789123456	Almeida e filhos
+   2	       2	               854549649143457	Eletronicos Silva
+
+|----------------------------------------------------------------------|FIM SQL
+
+3) Perguntas para embasar as queries SQL:
+
+3.1) Quantos  pedidos foram feitos por cada cliente?
+
+3.1.1) Comando SQL:
+select   distinct(idClient) , clients.tpessoa as 'Pessoa Fisica', Cnpjcpf as CPF ,  
+          concat(fName , ' ',mInit , ' ',lName ) as 'Nome do Cliente', 
+          count(*) as 'Qtd.de Pedidos'  
+ from clients join Orders  
+ on idClient = idOrderClient 
+ where tpessoa = 1 
+ group by idOrderClient 
+ order by idClient;
+
+3.1.2) Resultado do comando SQL:
+  
+  idClient, Pessoa Fisica,  CPF,          Nome do Cliente,    Qtd.de Pedidos
+   '1',     '1',            '123456789',  'Maria M Silva',       '2'
+   '2',     '1',            '987654321',  'Matheus O Pimentel',  '1'
+   '3',     '1',            '45678913',   'Ricardo F Silva',     '2'
+   '4',     '1',            '789123456',  'Julia S Franca',      '1'
+
+|----------------------------------------------------------------------|FIM SQL
+ 
+ 3.2) Algum vendedor também é fornecedor?
+ 3.2.1) Comando SQL:  
+   select  a.idSeller, a.SocialName, a.AbstName , a.CNPJ  , a.CPF , a.location, a.contact  
+   from  seller a , supplier b
+   where a.CNPJ = b.CNPJ
+   order by a.idSeller;
+
+   
+
+ 3.2.1) Resultado do comando SQL: Não foram encontrados registros 
+     -------------------NOT FOUND-----------------
+
+|----------------------------------------------------------------------|FIM SQL
+3.3) Relação de produtos fornecedores e estoques
+
+3.3.1) Comando SQL: 
+ Select  idPsSupplier as 'Fornecedor' , supplier.CNPJ, supplier.SocialName,
+        IdPsProduct  as 'Produto' , Pname, quantify as 'Qtde.Estoque' 
+-- relação do produto+fornecedor e  dados do fornecedor --
+from  productsupplier  ,  supplier , productstorage
+inner join product on product.idProduct  = idProdStorage
+where  productsupplier.idPsSupplier = supplier.idSupplier
+and    idProdStorage = IdPsProduct;
+
+
+3.3.2) Resultado do comando SQL:
+# Fornecedor  CNPJ	        SocialName	     Produto	Pname	               Qtde.Estoque
+    1	     123456789123456	Almeida e filhos	1	Fone de ouvido	           1000
+    1	     123456789123456	Almeida e filhos	2	Barbie Elsa	           500
+    2	     854549649143457	Eletronicos Silva	4	Microfone Vedo - Youtuber  100
+    2	     854549649143457	Eletronicos Silva	5	Sofa retratil	           10
+    3	     934567893934695	Eletronicos Valma	3	Body Carters	           10
+
+|----------------------------------------------------------------------|FIM SQL 
+3.4) Relação de nomes dos fornecedores e nomes dos produtos.
+
+3.4.1) Comando SQL:
+  
+Select  idPsSupplier as 'Fornecedor' ,supplier.CNPJ, supplier.SocialName ,
+        IdPsProduct  as 'Produto'    , product.pName , avaliacao as 'Valor Unitário'
+from  productsupplier       
+inner join supplier 
+on productsupplier.idPsSupplier = supplier.idSupplier
+inner join product  
+on IdPsProduct = product.idProduct
+order by productsupplier.idPsSupplier;
+   
+
+ 3.4.2) Resultado do comando SQL:
+   
+ # Fornecedor	CNPJ	        SocialName	  Produto   pName	       Valor Unitário
+    1	     123456789123456	Almeida e filhos    1	    Fone de ouvido	        4
+    1	     123456789123456	Almeida e filhos    2	    Barbie Elsa	                3
+    2	     854549649143457	Eletronicos Silva   4	    Microfone Vedo - Youtuber	4
+    2	     854549649143457	Eletronicos Silva   5	    Sofa retratil	        3
+    3	     934567893934695	Eletronicos Valma   3	    Body Carters	        5
+
+----------------------------------------------------------------------|FIM SQL
+4) Outras perguntas: 
+
+4.1) Quantidade de tipo diferentes de produtos por fornecedor?
+
+4.1.1) Comando sql:
+  select idPsSupplier as 'Fornecedor' , count(*) as 'Qtd.Produtos'  ,
+         supplier.CNPJ , supplier.SocialName as 'Razao Social'
+  from  productsupplier , supplier
+  where idPsSupplier = idSupplier
+  group by  idPsSupplier 
+  order by idPsSupplier  ;
+
+ 
+ 4.1.2 Resultado do comando SQL:
+# Fornecedor	Qtd.Tp.Produtos	  CNPJ	                Razao Social
+   1	          2	          123456789123456	Almeida e filhos
+   2	          2	          854549649143457	Eletronicos Silva
+   3	          1	          934567893934695	Eletronicos Valma
+
+----------------------------------------------------------------------|FIM SQL
+  
