@@ -33,8 +33,9 @@ DIO| Objetivo do repositório| </h3>
    
 -  Arquivo(png): Refinando um projeto Conceitual de Banco de Dados - E-COMMERCE.
 
-<h4></h4> 
-
+<h4>
+📚 |Projeto    : 2
+ </h4> 
 -  Título       : Criando e Implementando Projeto Logico Banco de Dados E-COMMERCE - Comandos SQL
 
 -  Database     : MySQL
