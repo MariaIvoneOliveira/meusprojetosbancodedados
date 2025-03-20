@@ -36,6 +36,17 @@ DIO| Objetivo do repositório| </h3>
 <h4>
 📚 |Projeto    : 2
  </h4> 
+-  Título       : Construindo um esquema Conceitual de Banco de Dados - Modelando do Zero - Oficina Mecânica
+
+-  Database     : MySQL
+
+-  Instrutora   : Juliana Mascarenhas
+   
+-  Arquivo(.TXT): Construindo um esquema Conceitual de Banco de Dados - Modelando do Zero Oficina Mecânica.png
+
+<h4>
+📚 |Projeto    :3
+ </h4> 
 -  Título       : Criando e Implementando Projeto Logico Banco de Dados E-COMMERCE - Comandos SQL
 
 -  Database     : MySQL
@@ -43,4 +54,3 @@ DIO| Objetivo do repositório| </h3>
 -  Instrutora   : Juliana Mascarenhas
    
 -  Arquivo(.TXT): Criando e Implementando BD E-COMMERCE - Comandos SQL.
-
