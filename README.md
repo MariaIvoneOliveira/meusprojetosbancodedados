@@ -54,3 +54,17 @@ DIO| Objetivo do repositório| </h3>
 -  Instrutora   : Juliana Mascarenhas
    
 -  Arquivo(.TXT): Criando e Implementando BD E-COMMERCE - Comandos SQL.
+
+
+
+<h4>
+📚 |Projeto    :4
+ </h4> 
+-  Título       : Desafio 2 - Construa um Esquema Logico Banco de Dados do Zero - Oficina Mecanica 
+
+-  Database     : MySQL
+
+-  Instrutora   : Juliana Mascarenhas
+   
+-  Arquivo(.TXT): Esquema Logico de Banco de Dados do Zero - Oficina Mecanica - Queries SQL.
+
