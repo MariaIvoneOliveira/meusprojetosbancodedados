@@ -1,0 +1,190 @@
+| DIO | Desafio - Comandos SQL 
+
+1) Selecione todos os clientes e veiculos da oficina .  
+1.1) Comando SQL:
+
+ Select  a.idClients, b.idVeiculo , b.nrPlacaveiculo , a.Cpfcnpj  ,   
+        a.nmCliente  , c.idOrcamento ,b.dsTpservico ,c.vrtotal ,c.dsstatus  
+from   clients     a ,
+       cadveiculos b, 
+       autzorcamento c
+       
+where a.idClients = b.idVeiculocli   
+and   a.idClients = c.idCliAutz  
+ 
+order by a.idClients;
+
+ 1.1) Resultado do comando SQL:
+ idClients  idVeiculo	nrPlacaveiculo	Cpfcnpj	      nmCliente   	  idOrcamento	dsTpservico	vrtotal	 dsstatus
+  1	    1	        RDF4789	        12345678911   Maria M Silva	  1	        01-Manutencao	2100	 5-Autorizado
+  2	    2	        SMH4580	        98765432123   Matheus O Pimentel  2	        02-Revisao	0	 4-Cancelado
+  3	    3	        HUF4325	        14567891300   Ricardo   F Silva	  3	        04-Avaliacao	1832	 7-Em avaliacao 
+  4	    4	        CCF5629	        78912345601   Julia S Franca	  4	        06-Retorno	0	 4-Cancelado
+  5	    5	        CCE5999	        9874563111    Roberta G Assis	  5	        06-Revisao	750	 7-Em avaliacao
+
+|FIM SQL | -----------------------------------------------------------------------------------------------------------------|
+
+2) Selecione o veiculo e o mecânico que está avaliando os serviços;
+ 
+|INI SQL | -----------------------------------------------------------------------------------------------------------------| 
+2.1)  Comando SQL:
+
+Select  a.idClients   , b.idVeiculo , b.nrPlacaveiculo     
+        ,a.nmCliente  , c.idOrcamento, dsTpservico ,c.dsstatus  
+        ,d.idMecanico,d.nmFuncmec
+from  clients   a   
+    join    cadveiculos   b  
+    join    autzorcamento c 
+    join    cadmecanicos  d  
+    join    avalmecanicos e
+      
+ where a.idClients  = b.idVeiculocli   
+ and   a.idClients  = c.idCliAutz 
+ and   b.idVeiculo  = e.idVeicavld 
+ and   d.idMecanico = e.idMecavld
+ and   e.idVeicavld = b.idVeiculo
+
+ order by a.idClients ;
+
+2.2) Resultado do comando SQL:
+idClients  idVeiculo  nrPlacaveiculo  nmCliente	         idOrcamento  dsstatus	      idAvalmec	idMecanico  nmFuncmec
+ 1	   1	      RDF4789	      Maria M Silva	  1	      5-Autorizado	1	   2	    Jose de Paulo Costa
+ 1	   1	      RDF4789	      Maria M Silva	  1	      5-Autorizado	2	   2	    Jose de Paulo Costa
+ 3	   3	      HUF4325	      Ricardo   F Silva	  3	      7-Em avaliacao	3	   4	    Pedro Carlos
+ 3	   3	      HUF4325	      Ricardo   F Silva	  3	      7-Em avaliacao	4	   5	    Sergio Souza
+ 4	   4	      CCF5629	      Julia S Franca	  4	      4-Cancelado	6	   6	    Gustavo Fontes
+ 5	   5	      CCE5999	      Roberta G Assis	  5	      7-Em avaliacao	5	   6	    Gustavo Fontes
+|FIM SQL | -----------------------------------------------------------------------------------------------------------------|
+
+3) Selecionar a quantidade de avaliações do mecânico por veiculo?
+   
+|INI SQL | -----------------------------------------------------------------------------------------------------------------|
+3.1) Comando SQL:
+select  idMecanico, d.nmFuncmec  , b.idVeiculo   , b.nrPlacaveiculo
+   , count(*) as 'qtd.Avaliações'
+from         clients   a   
+    join    cadveiculos   b 
+    join    cadmecanicos  d  
+    join    avalmecanicos e
+      
+ where a.idClients  = b.idVeiculocli 
+ and   b.idVeiculo  = e.idVeicavld 
+ and   d.idMecanico = e.idMecavld
+ and   e.idVeicavld = b.idVeiculo
+  
+ group by d.idMecanico , idVeiculo , b.nrPlacaveiculo
+ order by d.idMecanico, idVeiculo, b.nrPlacaveiculo;   
+
+3.2) Resultado do comando SQL:
+# idMecanico nmFuncmec	         idVeiculo  nrPlacaveiculo  qtd.Avaliações
+   2	     Jose de Paulo Costa  1	    RDF4789	    2
+   4	     Pedro Carlos	  3	    HUF4325	    1
+   5	     Sergio Souza	  3	    HUF4325	    1
+   6	     Gustavo Fontes	  4	    CCF5629	    1
+   6	    Gustavo Fontes	  5	    CCE5999	    1
+|FIM SQL | -----------------------------------------------------------------------------------------------------------------|
+
+4) Selecionar as ordens de serviço que foram geradas para cada veiculo após avaliação.
+   
+|INI SQL | -----------------------------------------------------------------------------------------------------------------|
+4.1) Comando SQL:
+select  d.nmFuncmec  , b.nrPlacaveiculo
+       ,idOrdserv, dsServico, vrServico , g.idOrcamento as 'Numero Orcamento'  
+       ,g.vrtotal as 'Total Orcamento',g.dsStatus  
+   
+from         clients   a   
+    join    cadveiculos   b 
+    join    cadmecanicos  d  
+    join    avalmecanicos e
+    join    ordemservico  f
+    join    autzorcamento g 
+    
+ where a.idClients  = b.idVeiculocli 
+ and   b.idVeiculo  = e.idVeicavld 
+ and   d.idMecanico = e.idMecavld
+ and   e.idVeicavld = b.idVeiculo
+ and   e.idAvalmec  = f.idOrdavalmec
+ and   g.idCliAutz  =  a.idClients  
+ and   g.idVeicAutz = b.idVeiculo
+ 
+ order by d.idMecanico, idVeiculo, b.nrPlacaveiculo;   
+
+4.2) Resultado do comando SQL:
+# nmFuncmec	        nrPlacaveiculo	idOrdserv dsServico	             vrServico	Numero          Total       dsStatus 
+                                                                                        Orcamento	Orcamento	
+Jose de Paulo Costa	RDF4789  	1	  Avaliacao automotiva	         300	1	        2100	    5-Autorizado
+Jose de Paulo Costa	RDF4789	        2	  Troca de pecas + Servicos	1800	1	        2100	    5-Autorizado
+Pedro Carlos	        HUF4325	        3	  Avaliacao do Motor           	200	3	        1832	    7-Em avaliacao
+Sergio Souza	        HUF4325        	4	  Troca do Motor + Servicos    	1632	3	        1832	    7-Em avaliacao
+Gustavo Fontes	        CCE5999	        6	  Funilaria do parte frente    	750	5	        750	    7-Em avaliacao
+Gustavo Fontes	        CCF5629	        5	  Funilaria do parte traseira  	750	4	        0	    4-Cancelado
+
+|FIM SQL | -----------------------------------------------------------------------------------------------------------------|
+5) Selecione as quantidade de ordens de serviço por veiculo 
+ 
+|INI SQL | -----------------------------------------------------------------------------------------------------------------|
+ 5.1) Comando SQL:
+select  b.idVeiculo, b.nrPlacaveiculo, a.nmCliente, count(*) as 'qtd.O.S'
+        ,sum(vrServico) as 'Vr.Orcamento'   
+   
+ from       clients       a   
+    join    cadveiculos   b 
+    join    cadmecanicos  d  
+    join    avalmecanicos e
+    join    ordemservico  f
+    join    autzorcamento g 
+    
+ where a.idClients  = b.idVeiculocli 
+ and   b.idVeiculo  = e.idVeicavld 
+ and   d.idMecanico = e.idMecavld
+ and   e.idVeicavld = b.idVeiculo
+ and   e.idAvalmec  = f.idOrdavalmec
+ and   g.idCliAutz  =  a.idClients  
+ and   g.idVeicAutz = b.idVeiculo
+ 
+group by   idVeiculo, b.nrPlacaveiculo   
+order by   idVeiculo, b.nrPlacaveiculo;
+
+5.2) Resultado do comando SQL:
+# idVeiculo	nrPlacaveiculo	nmCliente	qtd.O.S   Vr.Orcamento
+    1	        RDF4789	Maria M Silva	        2	  2100
+    3	        HUF4325	Ricardo   F Silva	2	  1832
+    4	        CCF5629	Julia S Franca	        1	  750
+    5	        CCE5999	Roberta G Assis	        1	  750
+
+|FIM SQL | -----------------------------------------------------------------------------------------------------------------|
+
+6) Selecione somente os veículos com mais de uma ordem de serviço .
+|INI SQL | -----------------------------------------------------------------------------------------------------------------|
+
+6.1) Comando SQL: 
+select  b.idVeiculo, b.nrPlacaveiculo, a.nmCliente, count(*) as 'qtd.O.S'
+        ,sum(vrServico) as 'Vr.Orcamento'   
+   
+ from       clients       a   
+    join    cadveiculos   b 
+    join    cadmecanicos  d  
+    join    avalmecanicos e
+    join    ordemservico  f
+    join    autzorcamento g 
+    
+ where a.idClients  = b.idVeiculocli 
+ and   b.idVeiculo  = e.idVeicavld 
+ and   d.idMecanico = e.idMecavld
+ and   e.idVeicavld = b.idVeiculo
+ and   e.idAvalmec  = f.idOrdavalmec
+ and   g.idCliAutz  =  a.idClients  
+ and   g.idVeicAutz = b.idVeiculo
+  
+group by   idVeiculo, b.nrPlacaveiculo 
+having COUNT(*) > 1
+order by   idVeiculo, b.nrPlacaveiculo;
+ 
+
+6.2) Resultado do comando SQL:
+# idVeiculo  nrPlacaveiculo	nmCliente	      qtd.O.S	Vr.Orcamento
+   1	     RDF4789      	Maria M Silva	        2	2100
+   3	     HUF4325	        Ricardo   F Silva	2	1832
+
+ |FIM SQL | -----------------------------------------------------------------------------------------------------------------|
+ 
