@@ -80,4 +80,4 @@ DIO| Objetivo do repositório| </h3>
 -  Arquivo(.xlxs): Dashboard Vendas Xbox.
 
    Objetivo: 
-        Este dashboard demonstra o plano mais vendido em determinados período do ano, bem como outras questões referentes , tais como: se os usuários possuem Auto Renewall e esses usuários são do plano (EA Play Season Pass ) ou não.
+        Este dashboard demonstra o plano mais vendido em determinados período do ano, bem como outras questões referentes , tais como: se os usuários possuem Auto Renewall e se esses usuários são do plano (EA Play Season Pass ) ou não.
