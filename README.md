@@ -1,6 +1,6 @@
  <h3>
 DIO| Objetivo do repositório| </h3>
-<h4> 💼 Armazenar projetos e trabalhos de Banco de Dados  Dio.me
+<h4> 💼 Armazenar projetos e trabalhos de Banco de Dados / Excel com COPILOT|  Dio.me
  </h4>  
 
 <h3>  
