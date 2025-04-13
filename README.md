@@ -68,3 +68,16 @@ DIO| Objetivo do repositório| </h3>
    
 -  Arquivo(.TXT): Esquema Logico de Banco de Dados do Zero - Oficina Mecanica - Queries SQL.
 
+<h4>
+📚 |Projeto    :5
+ </h4> 
+-  Título       : Desafio 1 - Criando um Dashboard de Vendas do Xbox com Excel
+
+-  Database     : Excel 
+
+-  Instrutora   : Felipe
+   
+-  Arquivo(.xlxs): Dashboard Vendas Xbox.
+
+   Objetivo: 
+        Este dashboard demonstra o plano mais vendido em determinados período do ano, bem como outras questões referentes , tais como: se os usuários possuem Auto Renewall e esses usuários são do plano (EA Play Season Pass ) ou não.
